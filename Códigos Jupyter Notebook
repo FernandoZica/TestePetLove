@@ -1,0 +1,24 @@
+## documentaçao de código no Jupyter Notebook
+pip install pandasql  ## para instalar a biblioteca que permite trabalhar com liguagem sql no pandas
+
+import pandas as pd
+import pandasql as ps
+import matplotlib.pyplot as plt
+
+url = 'https://raw.githubusercontent.com/petlove/vagas/master/data/bi-analysis/data-test-analytics.csv' ## importar o arquivo CSV disponibilizado para realização do teste
+df = pd.read_csv(url, encoding = 'utf-8', sep = ',')
+
+
+df.head() ## entender o tipo de arquivo e dados com os quais irei fazer a análise.
+
+## criei 4 dataframes de churn, baseado em última data de compra, ano 2020 e meses a seguir, para poder ver algumas estatísticas em cima dos mesmo.
+churn = ps.sqldf("select last_date_purchase, id, created_at, updated_at, deleted_at, birth_date, status, version, city, state, neighborhood, average_ticket, items_quantity, all_revenue, all_orders, recency, marketing_source from df where substr(last_date_purchase, 1, 4) = '2020' and substr(last_date_purchase, 6, 2) in ('09','10','11') order by last_date_purchase")
+churn09 = ps.sqldf("select last_date_purchase, id, created_at, updated_at, deleted_at, birth_date, status, version, city, state, neighborhood, average_ticket, items_quantity, all_revenue, all_orders, recency, marketing_source from df where substr(last_date_purchase, 1, 4) = '2020' and substr(last_date_purchase, 6, 2) = '09' order by last_date_purchase")
+churn10 = ps.sqldf("select last_date_purchase, id, created_at, updated_at, deleted_at, birth_date, status, version, city, state, neighborhood, average_ticket, items_quantity, all_revenue, all_orders, recency, marketing_source from df where substr(last_date_purchase, 1, 4) = '2020' and substr(last_date_purchase, 6, 2) = '10' order by last_date_purchase")
+churn11 = ps.sqldf("select last_date_purchase, id, created_at, updated_at, deleted_at, birth_date, status, version, city, state, neighborhood, average_ticket, items_quantity, all_revenue, all_orders, recency, marketing_source from df where substr(last_date_purchase, 1, 4) = '2020' and substr(last_date_purchase, 6, 2) = '11' order by last_date_purchase")
+
+## Aqui estou buscando algumas informações estatísticas nos dataframes gerados anteriormente.
+churn.describe()
+churn09.describe()
+churn10.describe()
+churn11.describe()
